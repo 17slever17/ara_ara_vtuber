@@ -48,7 +48,6 @@ function App() {
     setCount((prev) => prev + 1)
     setCurrentCount((prev) => prev + 1)
     const audio = new Audio(`/assets/audio/${Math.floor(Math.random() * 10) + 1}.mp3`)
-    console.log(Math.floor(Math.random() * 10) + 1)
     audio.play()
   }
 
