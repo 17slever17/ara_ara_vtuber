@@ -8,7 +8,7 @@
   align-items: center;
   flex-direction: column;
   gap: 50px;
-  background-color: #64b8c9;
+  background-color: #809ded;
   & * {
     color: #001f30;
   }
@@ -31,7 +31,7 @@
       width: 210px;
       padding: 5px;
       filter: grayscale(100%);
-      transition: 0.5s;
+      transition: 0.3s;
       &:hover {
         cursor: pointer;
         filter: none;
