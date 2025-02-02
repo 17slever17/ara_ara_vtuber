@@ -23,9 +23,6 @@ function App() {
       async function fetchData() {
         try {
           const getResponse = await axios.get('https://a5e42101e4a687b4.mokky.dev/counter')
-          await axios.patch('https://a5e42101e4a687b4.mokky.dev/counter/1', {
-            count: 15
-          })
           const counter = getResponse.data[0]
           if (!counter) {
             console.error('Нет данных для обновления')
