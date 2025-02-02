@@ -30,12 +30,10 @@ function App() {
           }
 
           const newCount = counter.count + currentCount
-          const patchResponse = await axios.patch(
-            `https://a5e42101e4a687b4.mokky.dev/counter/${counter.id}`,
-            { count: newCount }
-          )
+          await axios.patch(`https://a5e42101e4a687b4.mokky.dev/counter/${counter.id}`, {
+            count: newCount
+          })
           setCurrentCount(0)
-          console.log(patchResponse.data)
           setWcount(newCount)
         } catch (error) {
           console.error('Error fetching:', error.message)
