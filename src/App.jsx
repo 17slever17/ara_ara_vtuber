@@ -52,7 +52,8 @@ function App() {
   const clickAra = () => {
     setCount((prev) => prev + 1)
     setCurrentCount((prev) => prev + 1)
-    const audio = new Audio(`src/assets/audio/${Math.floor(Math.random() * 10) + 1}.mp3`)
+    const audio = new Audio(`/assets/audio/${Math.floor(Math.random() * 10) + 1}.mp3`)
+    console.log(Math.floor(Math.random() * 10) + 1)
     audio.play()
   }
 
@@ -63,7 +64,7 @@ function App() {
         <span className='title'>Global Ara Ara Counter</span>
       </div>
       <div className='myCounter'>
-        <img className='gif' src='src/assets/S02.gif' alt='Shylily' onClick={() => clickAra()}></img>
+        <img className='gif' src='/assets/S02.gif' alt='Shylily' onClick={() => clickAra()}></img>
         <div className='counter'>
           <span className='title'>Ara Ara Counter: </span>
           <span className='count'>{count}</span>
