@@ -1,0 +1,141 @@
+@use './_normalize.scss';
+@use 'sass:color';
+
+@mixin theme($color) {
+  background-color: $color;
+
+  .linkWrapper {
+    & * {
+      stroke: $color;
+    }
+    .linkTitle {
+      color: $color;
+    }
+    &:hover {
+      & * {
+        color: color.adjust($color, $lightness: 8%);
+        stroke: color.adjust($color, $lightness: 8%);
+      }
+    }
+    &:active {
+      & * {
+        color: color.adjust($color, $lightness: -8%);
+        stroke: color.adjust($color, $lightness: -8%);
+      }
+    }
+  }
+}
+
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 50px;
+  & * {
+    color: #001f30;
+  }
+  & > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .worldCounter {
+    .count {
+      font-size: 64px;
+      font-weight: bold;
+    }
+    .title {
+      font-size: 20px;
+    }
+  }
+  .myCounter {
+    .gif {
+      width: 220px;
+      padding: 5px;
+      filter: grayscale(100%);
+      transition: 0.3s;
+      &:hover {
+        cursor: pointer;
+        filter: none;
+      }
+    }
+    .counter {
+      font-size: 18px;
+      .title {
+        font-weight: bold;
+      }
+    }
+  }
+  .desc {
+    & > span a {
+      text-decoration: underline;
+    }
+    .channel {
+      font-size: 18px;
+    }
+    .createdBy {
+      font-size: 12px;
+    }
+  }
+}
+.linkWrapper {
+  position: absolute;
+  left: 50px;
+  top: 30px;
+  .link {
+    .linkContainer {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      .arrow {
+        rotate: 180deg;
+      }
+      span {
+        transition: margin 0.1s ease-in-out;
+      }
+    }
+    .linkTitle {
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 1.2;
+    }
+    &:hover {
+      cursor: pointer;
+      span {
+        margin-left: 7px;
+      }
+    }
+  }
+}
+
+.linkBtn {
+  border-radius: 20px;
+  padding: 12px 22px;
+  width: 120px;
+  height: 45px;
+  background: #fff;
+  position: relative;
+  .linkContainerAbsolute {
+    position: absolute;
+  }
+}
+
+.shylily-ara-ara, .shylily-womp-womp {
+  @include theme(#688bed);
+}
+
+.filian-ara-ara {
+  @include theme(#c487fa);
+}
+
+.kobo-ara-ara {
+	@include theme(#74c9e5);
+}
+
+.gura-ara-ara {
+	@include theme(#57bb77);
+}

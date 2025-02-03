@@ -1,0 +1,42 @@
+[
+  {
+		"id": 1,
+    "cardName": "Shylily AraAra",
+    "name": "Shylily",
+    "src": "shylily-ara-ara",
+    "link": "https://www.twitch.tv/shylily",
+    "soundsCount": 15
+  },
+  {
+		"id": 2,
+    "cardName": "Kobo AraAra",
+    "name": "Kobo Kanaeru",
+    "src": "kobo-ara-ara",
+    "link": "https://www.youtube.com/@KoboKanaeru",
+    "soundsCount": 8
+  },
+  {
+		"id": 3,
+    "cardName": "filian AraAra",
+    "name": "Filian",
+    "src": "filian-ara-ara",
+    "link": "https://www.twitch.tv/filian",
+    "soundsCount": 9
+  },
+  {
+		"id": 4,
+    "cardName": "Gura AraAra",
+    "name": "Gawr Gura",
+    "src": "gura-ara-ara",
+    "link": "https://www.youtube.com/@GawrGura",
+    "soundsCount": 19
+  },
+  {
+		"id": 5,
+    "cardName": "Shylily WompWomp",
+    "name": "Shylily",
+    "src": "shylily-womp-womp",
+    "link": "https://www.twitch.tv/shylily",
+    "soundsCount": 54
+  }
+]
