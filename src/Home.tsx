@@ -7,7 +7,7 @@ type THomeProps = {
 
 const Home: React.FC<THomeProps> = ({ data }) => {
   return (
-    <>
+    <div className={styles.wrapper}>
       <div className={styles.container}>
         <span className={styles.title}>Choice of sounds</span>
         <div className={styles.cards}>
@@ -35,8 +35,7 @@ const Home: React.FC<THomeProps> = ({ data }) => {
           </a>
         </span>
       </footer>
-      <div></div>
-    </>
+    </div>
   )
 }
 export default Home
