@@ -6,9 +6,16 @@ import { Link } from 'react-router-dom'
 
 import ArrowIcon from './assets/arrowIcon.svg?react'
 
-type TClickerProps = { id: number; src: string; name: string; link: string; soundsCount: number }
+type TClickerProps = {
+  id: number
+  src: string
+  name: string
+  link: string
+  sound: string
+  soundsCount: number
+}
 
-const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, soundsCount }) => {
+const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCount }) => {
   const [count, setCount] = useState(0)
   const [currentCount, setCurrentCount] = useState(0)
   const [time, setTime] = useState(10)
@@ -89,7 +96,7 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, soundsCount }) 
       </div>
       <div className={styles.worldCounter}>
         <span className={styles.count}>{wcount + currentCount}</span>
-        <span className={styles.title}>Global Ara Ara Counter</span>
+        <span className={styles.title}>Global {sound} Counter</span>
       </div>
       <div className={styles.myCounter}>
         <img
@@ -100,7 +107,7 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, soundsCount }) 
           onClick={() => clickAra()}
         ></img>
         <div className={styles.counter}>
-          <span className={styles.title}>Ara Ara Counter: </span>
+          <span className={styles.title}>{sound} Counter: </span>
           <span className={styles.count}>{count}</span>
         </div>
       </div>

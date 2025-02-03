@@ -18,6 +18,7 @@ const App: React.FC = () => {
               src={vtuber.src}
               name={vtuber.name}
               link={vtuber.link}
+							sound={vtuber.sound}
               soundsCount={vtuber.soundsCount}
             />
           }
