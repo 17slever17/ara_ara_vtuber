@@ -14,7 +14,6 @@
     height: 250px;
     img {
       top: 0;
-      filter: brightness(85%);
       transition: all 0.15s;
       position: absolute;
       width: 250px;
@@ -30,7 +29,7 @@
   &:hover {
     .img img {
       top: -5px;
-      filter: none;
+      filter: brightness(110%);
     }
   }
   @media (max-width: 650px) {
@@ -45,11 +44,11 @@
         width: 200px;
       }
     }
-		.title {
-			font-size: 16px;
-		}
+    .title {
+      font-size: 16px;
+    }
   }
-	@media (max-width: 500px) {
+  @media (max-width: 500px) {
     height: 202px;
     .img {
       position: relative;
@@ -57,7 +56,7 @@
       height: 165px;
       img {
         width: 165px;
-				border-radius: 10px;
+        border-radius: 10px;
       }
     }
   }
