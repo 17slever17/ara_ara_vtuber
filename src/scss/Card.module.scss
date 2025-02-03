@@ -13,11 +13,12 @@
     width: 250px;
     height: 250px;
     img {
-			top: 0;
-			filter: brightness(85%);
+      top: 0;
+      filter: brightness(85%);
       transition: all 0.15s;
       position: absolute;
       width: 250px;
+      border-radius: 12px;
     }
   }
   .title {
@@ -29,7 +30,34 @@
   &:hover {
     .img img {
       top: -5px;
-			filter: none;
+      filter: none;
+    }
+  }
+  @media (max-width: 650px) {
+    gap: 7px;
+    padding: 5px;
+    height: 237px;
+    .img {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      img {
+        width: 200px;
+      }
+    }
+		.title {
+			font-size: 16px;
+		}
+  }
+	@media (max-width: 500px) {
+    height: 212px;
+    .img {
+      position: relative;
+      width: 175px;
+      height: 175px;
+      img {
+        width: 175px;
+      }
     }
   }
 }

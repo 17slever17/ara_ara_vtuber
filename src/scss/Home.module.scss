@@ -17,20 +17,31 @@
     padding: 0 15px;
     gap: 25px 50px;
   }
+  @media (max-width: 1000px) {
+    .cards {
+      grid-template-columns: 1fr 1fr;
+			gap: 15px 30px;
+    }
+  }
+	@media (max-width: 500px) {
+    .cards {
+			gap: 10px 15px;
+    }
+  }
 }
 
 .footer {
-	height: 50px;
-	padding: 0 50px;
-	display: flex;
-	justify-content: space-evenly;
-	align-items: center;
-	background-color: #151515;
-	span, span > a {
-		color: #fff;
-		font-size: 18px;
-	}
-	span > a {
-		text-decoration: underline;
-	}
+  height: 50px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: #151515;
+  span,
+  span > a {
+    color: #fff;
+    font-size: 18px;
+  }
+  span > a {
+    text-decoration: underline;
+  }
 }
