@@ -21,6 +21,7 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
   const [time, setTime] = useState(10)
   const [wcount, setWcount] = useState(0)
   const [lastSound, setLastSound] = useState(-1)
+  const [last2Sound, setLast2Sound] = useState(-1)
   const isPageVisible = usePageVisibility()
 
   const currentCountRef = useRef(currentCount)
@@ -76,11 +77,12 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
     setCount((prev) => prev + 1)
     setCurrentCount((prev) => prev + 1)
     let sound = Math.floor(Math.random() * soundsCount) + 1
-    while (sound === lastSound) {
+    while (sound === lastSound && sound === last2Sound) {
       sound = Math.floor(Math.random() * soundsCount) + 1
     }
     const audio = new Audio(`/assets/${src}/audio/${sound}.mp3`)
     audio.play()
+    setLast2Sound(lastSound)
     setLastSound(sound)
   }
 

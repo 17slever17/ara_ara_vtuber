@@ -35,7 +35,8 @@
   align-items: center;
   flex-direction: column;
   gap: 50px;
-  & * {
+  & span,
+  a {
     color: #001f30;
   }
   & > div {
@@ -58,7 +59,7 @@
       padding: 5px;
       user-select: none;
       -webkit-user-drag: none;
-			-webkit-tap-highlight-color: transparent;
+      -webkit-tap-highlight-color: transparent;
       filter: grayscale(100%);
       transition: 0.3s;
       &:hover {
