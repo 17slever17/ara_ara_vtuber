@@ -110,6 +110,10 @@
       }
     }
   }
+  @media (max-width: 500px) {
+    left: 30px;
+    top: 20px;
+  }
 }
 
 .linkBtn {
@@ -124,7 +128,8 @@
   }
 }
 
-.shylily-ara-ara, .shylily-womp-womp {
+.shylily-ara-ara,
+.shylily-womp-womp {
   @include theme(#688bed);
 }
 
@@ -133,9 +138,9 @@
 }
 
 .kobo-ara-ara {
-	@include theme(#74c9e5);
+  @include theme(#74c9e5);
 }
 
 .gura-ara-ara {
-	@include theme(#57bb77);
+  @include theme(#57bb77);
 }
