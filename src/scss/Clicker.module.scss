@@ -58,6 +58,7 @@
       padding: 5px;
       user-select: none;
       -webkit-user-drag: none;
+			-webkit-tap-highlight-color: transparent;
       filter: grayscale(100%);
       transition: 0.3s;
       &:hover {

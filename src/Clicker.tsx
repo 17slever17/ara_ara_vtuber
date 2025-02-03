@@ -96,6 +96,7 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, soundsCount }) 
           className={styles.gif}
           src={`/assets/${src}/${src}.gif`}
           alt='vtuber'
+          draggable='false'
           onClick={() => clickAra()}
         ></img>
         <div className={styles.counter}>
