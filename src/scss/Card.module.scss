@@ -50,13 +50,14 @@
 		}
   }
 	@media (max-width: 500px) {
-    height: 212px;
+    height: 202px;
     .img {
       position: relative;
-      width: 175px;
-      height: 175px;
+      width: 165px;
+      height: 165px;
       img {
-        width: 175px;
+        width: 165px;
+				border-radius: 10px;
       }
     }
   }
