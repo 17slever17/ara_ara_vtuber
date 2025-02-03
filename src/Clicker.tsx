@@ -32,31 +32,38 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, soundsCount }) 
   useEffect(() => {
     if (time >= 8 && isPageVisible) {
       setTime(0)
-      async function fetchData() {
-        try {
-          const getResponse = await axios.get(`https://a5e42101e4a687b4.mokky.dev/counter/${id}`)
-          const counter = getResponse.data
-          if (!counter) {
-            console.error('Нет данных для обновления')
-            return
-          }
-          const newCount = counter.count + currentCountRef.current
-          setWcount(newCount)
-          if (currentCountRef.current !== 0) {
-            setCurrentCount(0)
-            await axios.patch(`https://a5e42101e4a687b4.mokky.dev/counter/${id}`, {
-              count: newCount
-            })
-          }
-        } catch (error) {
-          if (error instanceof Error) {
-            console.error('Error fetching:', error.message)
-          }
-        }
-      }
       fetchData()
     }
   }, [time, isPageVisible, currentCount])
+
+  useEffect(() => {
+    return () => {
+      fetchData()
+    }
+  }, [])
+
+  async function fetchData() {
+    try {
+      const getResponse = await axios.get(`https://a5e42101e4a687b4.mokky.dev/counter/${id}`)
+      const counter = getResponse.data
+      if (!counter) {
+        console.error('Нет данных для обновления')
+        return
+      }
+      const newCount = counter.count + currentCountRef.current
+      setWcount(newCount)
+      if (currentCountRef.current !== 0) {
+        setCurrentCount(0)
+        await axios.patch(`https://a5e42101e4a687b4.mokky.dev/counter/${id}`, {
+          count: newCount
+        })
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error fetching:', error.message)
+      }
+    }
+  }
 
   const clickAra = () => {
     setCount((prev) => prev + 1)
