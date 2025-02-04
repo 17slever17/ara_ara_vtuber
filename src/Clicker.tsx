@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { usePageVisibility } from 'react-page-visibility'
+import { motion, animate } from 'framer-motion'
+import AnimateNumber from './AnimateNumber'
 import axios from 'axios'
+
 import styles from './scss/Clicker.module.scss'
 import { Link } from 'react-router-dom'
 
@@ -30,7 +33,10 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
     const intervalId = setInterval(() => {
       setTime((prevTime) => prevTime + 1)
     }, 1000)
-    return () => clearInterval(intervalId)
+    return () => {
+      clearInterval(intervalId)
+      fetchData()
+    }
   }, [])
 
   useEffect(() => {
@@ -38,17 +44,11 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
   }, [currentCount])
 
   useEffect(() => {
-    if (time >= 8 && isPageVisible) {
+    if ((time >= 8 && isPageVisible) || (time >= 8 && currentCount !== 0)) {
       setTime(0)
       fetchData()
     }
   }, [time, isPageVisible, currentCount])
-
-  useEffect(() => {
-    return () => {
-      fetchData()
-    }
-  }, [])
 
   async function fetchData() {
     try {
@@ -59,12 +59,14 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
         return
       }
       const newCount = counter.count + currentCountRef.current
-      setWcount(newCount)
-      if (currentCountRef.current !== 0) {
-        setCurrentCount(0)
-        await axios.patch(`https://a5e42101e4a687b4.mokky.dev/counter/${id}`, {
-          count: newCount
-        })
+			setWcount(newCount)
+      if (newCount !== wcount) {
+        if (currentCountRef.current !== 0) {
+					setCurrentCount(0)
+          await axios.patch(`https://a5e42101e4a687b4.mokky.dev/counter/${id}`, {
+            count: newCount
+          })
+        }
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -80,7 +82,7 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
     while (sound === lastSound || sound === last2Sound) {
       sound = Math.floor(Math.random() * soundsCount) + 1
     }
-		console.log(sound)
+    console.log(sound)
     const audio = new Audio(`/assets/${src}/audio/${sound}.mp3`)
     audio.play()
     setLast2Sound(lastSound)
@@ -98,7 +100,7 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
         </Link>
       </div>
       <div className={styles.worldCounter}>
-        <span className={styles.count}>{wcount + currentCount}</span>
+        <span className={styles.count}>{wcount ? wcount + currentCount : '-'}</span>
         <span className={styles.title}>Global {sound} Counter</span>
       </div>
       <div className={styles.myCounter}>
