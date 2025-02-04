@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { usePageVisibility } from 'react-page-visibility'
 import { motion, animate } from 'framer-motion'
-import AnimateNumber from './AnimateNumber'
 import axios from 'axios'
 
 import styles from './scss/Clicker.module.scss'
