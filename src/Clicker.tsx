@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { usePageVisibility } from 'react-page-visibility'
 import { motion, animate } from 'framer-motion'
+import AnimateNumbers from './AnimateNumbers'
 import axios from 'axios'
 
 import styles from './scss/Clicker.module.scss'
@@ -58,10 +59,10 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
         return
       }
       const newCount = counter.count + currentCountRef.current
-			setWcount(newCount)
+      setWcount(newCount)
       if (newCount !== wcount) {
         if (currentCountRef.current !== 0) {
-					setCurrentCount(0)
+          setCurrentCount(0)
           await axios.patch(`https://a5e42101e4a687b4.mokky.dev/counter/${id}`, {
             count: newCount
           })
@@ -99,7 +100,11 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
         </Link>
       </div>
       <div className={styles.worldCounter}>
-        <span className={styles.count}>{wcount ? wcount + currentCount : '-'}</span>
+        {wcount ? (
+          <AnimateNumbers children={wcount + currentCount} />
+        ) : (
+          <span className={styles.count}>—</span>
+        )}
         <span className={styles.title}>Global {sound} Counter</span>
       </div>
       <div className={styles.myCounter}>
