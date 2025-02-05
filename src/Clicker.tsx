@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { usePageVisibility } from 'react-page-visibility'
-import { motion, animate } from 'framer-motion'
 import AnimateNumbers from './AnimateNumbers'
 import axios from 'axios'
 
@@ -82,7 +81,6 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
     while (sound === lastSound || sound === last2Sound) {
       sound = Math.floor(Math.random() * soundsCount) + 1
     }
-    console.log(sound)
     const audio = new Audio(`/assets/${src}/audio/${sound}.mp3`)
     audio.play()
     setLast2Sound(lastSound)

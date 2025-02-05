@@ -32,7 +32,7 @@ const AnimateNumbers: React.FC<TAnimateNumberProps> = ({ children }) => {
   }, [children, prevChildren])
 
   return (
-    <div className={styles.numbers} style={{ display: 'inline-flex', height: '86.5px', overflow: 'hidden' }}>
+    <div className={styles.numbers} style={{ display: 'inline-flex', height: 87, overflow: 'hidden' }}>
       {String(children)
         .split('')
         .map((digit, index) => (

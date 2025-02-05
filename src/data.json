@@ -1,21 +1,22 @@
 [
   {
     "id": 1,
-    "cardName": "Shylily AraAra",
+    "cardName": "Shylily Womp",
     "name": "Shylily",
-    "src": "shylily-ara-ara",
+    "src": "shylily-womp-womp",
     "link": "https://www.twitch.tv/shylily",
-    "sound": "Ara Ara",
-    "soundsCount": 15
+    "sound": "Womp Womp",
+    "soundsCount": 54
   },
+
   {
     "id": 2,
-    "cardName": "Kobo AraAra",
-    "name": "Kobo Kanaeru",
-    "src": "kobo-ara-ara",
-    "link": "https://www.youtube.com/@KoboKanaeru",
+    "cardName": "Calli AraAra",
+    "name": "Calliope Mori",
+    "src": "calli-ara-ara",
+    "link": "https://www.youtube.com/@MoriCalliope",
     "sound": "Ara Ara",
-    "soundsCount": 8
+    "soundsCount": 12
   },
   {
     "id": 3,
@@ -37,11 +38,20 @@
   },
   {
     "id": 5,
-    "cardName": "Shylily Womp",
+    "cardName": "Shylily AraAra",
     "name": "Shylily",
-    "src": "shylily-womp-womp",
+    "src": "shylily-ara-ara",
     "link": "https://www.twitch.tv/shylily",
-    "sound": "Womp Womp",
-    "soundsCount": 54
+    "sound": "Ara Ara",
+    "soundsCount": 15
+  },
+  {
+    "id": 6,
+    "cardName": "Kobo AraAra",
+    "name": "Kobo Kanaeru",
+    "src": "kobo-ara-ara",
+    "link": "https://www.youtube.com/@KoboKanaeru",
+    "sound": "Ara Ara",
+    "soundsCount": 8
   }
 ]
