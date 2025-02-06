@@ -50,31 +50,29 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
   }, [time, isPageVisible, currentCount])
 
   async function fetchData() {
-		try {
-			const getResponse = await axios.get('/api/mokky-proxy', {
-				params: { path: `counter/${id}` }
-			});
-	
-			const counter = getResponse.data;
-			console.log(counter)
-			if (!counter) {
-				console.error('Нет данных для обновления');
-				return;
-			}
-	
-			const newCount = counter.count + currentCountRef.current;
-			setWcount(newCount);
-	
-			if (newCount !== wcount) {
-				if (currentCountRef.current !== 0) {
-					setCurrentCount(0);
-					await axios.patch(`/api/mokky-proxy?path=counter/${id}`, { count: newCount });
-				}
-			}
-		} catch (error) {
-			console.error('Ошибка:', error);
-		}
-	}
+    try {
+      const getResponse = await axios.get(`/api/mokky-proxy?path=counter/${id}`)
+
+      const counter = getResponse.data
+      console.log(counter)
+      if (!counter) {
+        console.error('Нет данных для обновления')
+        return
+      }
+
+      const newCount = counter.count + currentCountRef.current
+      setWcount(newCount)
+
+      if (newCount !== wcount) {
+        if (currentCountRef.current !== 0) {
+          setCurrentCount(0)
+          await axios.patch(`/api/mokky-proxy?path=counter/${id}`, { count: newCount })
+        }
+      }
+    } catch (error) {
+      console.error('Ошибка:', error)
+    }
+  }
 
   const clickAra = () => {
     setCount((prev) => prev + 1)
