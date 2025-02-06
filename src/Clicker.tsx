@@ -52,8 +52,8 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
   async function fetchData() {
     try {
       const getResponse = await axios.get(`/api/mokky-proxy?path=counter/${id}`)
-
       const counter = getResponse.data
+      console.log(counter)
       if (!counter) {
         console.error('Нет данных для обновления')
         return
