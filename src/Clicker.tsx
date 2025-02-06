@@ -56,6 +56,7 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
 			});
 	
 			const counter = getResponse.data;
+			console.log(counter)
 			if (!counter) {
 				console.error('Нет данных для обновления');
 				return;
