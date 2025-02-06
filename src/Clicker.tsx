@@ -68,10 +68,7 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
 			if (newCount !== wcount) {
 				if (currentCountRef.current !== 0) {
 					setCurrentCount(0);
-					await axios.patch('/api/mokky-proxy', 
-						{ count: newCount }, // тело запроса
-						{ params: { path: `counter/${id}` } } // конфигурация, где параметры запроса передаются корректно
-					);
+					await axios.patch(`/api/mokky-proxy?path=counter/${id}`, { count: newCount });
 				}
 			}
 		} catch (error) {
