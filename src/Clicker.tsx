@@ -43,7 +43,7 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
   }, [currentCount])
 
   useEffect(() => {
-    if ((time >= 8 && isPageVisible) || (time >= 8 && currentCount !== 0)) {
+    if (time >= 10 && (isPageVisible || currentCount !== 0)) {
       setTime(0)
       fetchData()
     }
@@ -51,26 +51,25 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
 
   async function fetchData() {
     try {
-      const getResponse = await axios.get(`https://a5e42101e4a687b4.mokky.dev/counter/${id}`)
+      const getResponse = await axios.get(`/api/mokky-proxy?path=counter/${id}`)
+
       const counter = getResponse.data
       if (!counter) {
         console.error('Нет данных для обновления')
         return
       }
+
       const newCount = counter.count + currentCountRef.current
       setWcount(newCount)
+
       if (newCount !== wcount) {
         if (currentCountRef.current !== 0) {
           setCurrentCount(0)
-          await axios.patch(`https://a5e42101e4a687b4.mokky.dev/counter/${id}`, {
-            count: newCount
-          })
+          await axios.patch(`/api/mokky-proxy?path=counter/${id}`, { count: newCount })
         }
       }
     } catch (error) {
-      if (error instanceof Error) {
-        console.error('Error fetching:', error.message)
-      }
+      console.error('Ошибка:', error)
     }
   }
 

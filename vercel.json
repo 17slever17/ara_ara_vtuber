@@ -1,3 +1,6 @@
 {
-	"routes": [{ "src": "/[^.]+", "dest": "/", "status": 200 }]
+  "routes": [
+    { "src": "^/api/.*", "dest": "/api/mokky-proxy" },
+    { "src": "/[^.]+", "dest": "/", "status": 200 }
+  ]
 }
