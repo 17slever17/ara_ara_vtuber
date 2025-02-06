@@ -62,7 +62,7 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
       if (newCount !== wcount) {
         if (currentCountRef.current !== 0) {
           setCurrentCount(0)
-          await axios.patch(`https://a5e42101e4a687b4.mokky.dev/counter/${id}`, {
+          await axios.patch(`/api/mokky-proxy/counter/${id}`, {
             count: newCount
           })
         }
