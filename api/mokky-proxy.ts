@@ -1,25 +1,21 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import axios from 'axios';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const MOKKY_BASE_URL = process.env.MOKKY_BASE_URL;
-  if (!MOKKY_BASE_URL) {
-    return res.status(500).json({ error: 'MOKKY_BASE_URL не задан в переменных окружения' });
-  }
-
-  const url = `${MOKKY_BASE_URL}${req.url}`;
+  const MOKKY_BASE_URL = process.env.MOKKY_BASE_URL; // Указываем в Vercel
+  const url = `${MOKKY_BASE_URL}${req.url?.replace('/api/mokky-proxy', '')}`;
 
   try {
-    const response = await fetch(url, {
+    const response = await axios({
       method: req.method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: req.method !== 'GET' ? JSON.stringify(req.body) : undefined,
+      url,
+      headers: { 'Content-Type': 'application/json' },
+      data: req.body
     });
 
-    const data = await response.json();
-    res.status(response.status).json(data);
+    res.status(response.status).json(response.data);
   } catch (error) {
-    res.status(500).json({ error: 'Ошибка при запросе к Mokky' });
+    console.error('Ошибка запроса к Mokky:', error);
+    res.status(500).json({ error: 'Ошибка сервера' });
   }
 }
