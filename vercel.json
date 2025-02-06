@@ -1,6 +1,0 @@
-{
-  "version": 2,
-  "builds": [
-    { "src": "api/mokky-proxy.ts", "use": "@vercel/node" }
-  ]
-}
