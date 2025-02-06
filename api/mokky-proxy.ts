@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import axios from 'axios';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+	console.log('Начало обработки запроса:', req.method, req.url, req.query);
   const MOKKY_BASE_URL = process.env.MOKKY_BASE_URL;
   if (!MOKKY_BASE_URL) {
     console.error("MOKKY_BASE_URL не задана в переменных окружения");
