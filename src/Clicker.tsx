@@ -7,6 +7,7 @@ import styles from './scss/Clicker.module.scss'
 import { Link } from 'react-router-dom'
 
 import ArrowIcon from './assets/arrowIcon.svg?react'
+import ParticleEffect from './ClickParticles'
 
 type TClickerProps = {
   id: number
@@ -105,13 +106,16 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
         <span className={styles.title}>Global {sound} Counter</span>
       </div>
       <div className={styles.myCounter}>
-        <img
-          className={styles.gif}
-          src={`/assets/${src}/${src}.gif`}
-          alt='vtuber'
-          draggable='false'
-          onClick={() => clickAra()}
-        ></img>
+        <ParticleEffect>
+          <img
+            className={styles.gif}
+            src={`/assets/${src}/${src}.gif`}
+            alt='vtuber'
+            draggable='false'
+            onClick={() => clickAra()}
+          ></img>
+        </ParticleEffect>
+
         <div className={styles.counter}>
           <span className={styles.title}>{sound} Counter: </span>
           <span className={styles.count}>{count}</span>
