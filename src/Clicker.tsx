@@ -19,12 +19,12 @@ type TClickerProps = {
 }
 
 const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCount }) => {
+  const oversounds = Math.max(4, Math.floor(soundsCount / 5))
   const [count, setCount] = useState(0)
   const [currentCount, setCurrentCount] = useState(0)
   const [time, setTime] = useState(10)
   const [wcount, setWcount] = useState(0)
-  const [lastSound, setLastSound] = useState(-1)
-  const [last2Sound, setLast2Sound] = useState(-1)
+  const [lastSounds, setLastSounds] = useState(Array(oversounds).fill(0))
   const isPageVisible = usePageVisibility()
 
   const currentCountRef = useRef(currentCount)
@@ -76,14 +76,13 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
   const clickAra = () => {
     setCount((prev) => prev + 1)
     setCurrentCount((prev) => prev + 1)
-    let sound = Math.floor(Math.random() * soundsCount) + 1
-    while (sound === lastSound || sound === last2Sound) {
-      sound = Math.floor(Math.random() * soundsCount) + 1
-    }
+    const sounds = [...Array(soundsCount).keys()]
+      .map((i) => i + 1)
+      .filter((num) => !lastSounds.includes(num))
+    const sound = sounds[Math.floor(Math.random() * sounds.length)]
     const audio = new Audio(`/assets/${src}/audio/${sound}.mp3`)
     audio.play()
-    setLast2Sound(lastSound)
-    setLastSound(sound)
+    setLastSounds((prev) => [...prev.slice(1), sound])
   }
 
   return (
