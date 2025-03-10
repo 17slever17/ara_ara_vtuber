@@ -19,7 +19,7 @@ type TClickerProps = {
 }
 
 const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCount }) => {
-  const oversounds = Math.max(4, Math.floor(soundsCount / 5))
+  const oversounds = Math.min(soundsCount - 2, Math.max(4, Math.floor(soundsCount / 5)))
   const [count, setCount] = useState(0)
   const [currentCount, setCurrentCount] = useState(0)
   const [time, setTime] = useState(10)
