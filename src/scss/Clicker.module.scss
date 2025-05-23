@@ -1,4 +1,5 @@
 @use './_normalize.scss';
+@use './variables' as v;
 @use 'sass:color';
 
 @mixin theme($color) {
@@ -134,21 +135,21 @@
 
 .shylily-ara-ara,
 .shylily-womp-womp {
-  @include theme(#688bed);
+  @include theme(v.$blue-violet);
 }
 
 .filian-ara-ara {
-  @include theme(#c487fa);
+  @include theme(v.$purple);
 }
 
 .kobo-ara-ara {
-  @include theme(#74c9e5);
+  @include theme(v.$blue-light);
 }
 
 .gura-ara-ara {
-  @include theme(#57bb77);
+  @include theme(v.$green);
 }
 
 .calli-ara-ara {
-  @include theme(#ff9fce);
+  @include theme(v.$pink);
 }

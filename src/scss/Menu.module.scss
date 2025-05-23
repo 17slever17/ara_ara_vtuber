@@ -1,0 +1,120 @@
+@use './variables' as v;
+
+@mixin theme($color) {
+  & * {
+    stroke: $color;
+  }
+  .linkTitle {
+    color: $color;
+  }
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  .menuButton {
+    background: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    position: absolute;
+    top: 30px;
+    right: 50px;
+    z-index: 10;
+  }
+
+  .gear {
+    width: 32px;
+    height: 32px;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .open {
+    transform: rotate(120deg);
+  }
+
+  .wrapperMenu {
+    position: absolute;
+    top: 90px;
+    right: 50px;
+    z-index: 10;
+    transition: all 0.2s ease-in-out;
+		visibility: hidden;
+    .settingsMenu {
+      transition: all 0.2s ease-in-out;
+      background-color: white;
+      opacity: 0;
+      clip-path: inset(0 0 100% 0);
+      overflow: hidden;
+      border-radius: 12px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      .selectSection {
+        transform: translateY(-100%);
+        transition: all 0.2s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        .wrapper {
+          left: 0;
+          width: 100%;
+          height: 100%;
+          display: grid;
+          grid-template-columns: repeat(6, 1fr);
+          gap: 10px;
+          overflow: hidden;
+          .card {
+            align-self: center;
+            justify-self: center;
+            width: 45px;
+            height: 45px;
+            background-color: #698bed;
+            border-radius: 12px;
+          }
+        }
+        .title {
+          font-size: 16px;
+        }
+      }
+    }
+    &.openedMenu {
+			visibility: visible;
+      .settingsMenu {
+        clip-path: inset(0 0 0 0);
+        opacity: 1;
+        .selectSection {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+.shylily-ara-ara,
+.shylily-womp-womp {
+  @include theme(v.$blue-violet);
+}
+
+.filian-ara-ara {
+  @include theme(v.$purple);
+}
+
+.kobo-ara-ara {
+  @include theme(v.$blue-light);
+}
+
+.gura-ara-ara {
+  @include theme(v.$green);
+}
+
+.calli-ara-ara {
+  @include theme(v.$pink);
+}

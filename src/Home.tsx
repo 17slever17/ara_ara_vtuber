@@ -1,11 +1,16 @@
 import Card from './Card'
 import styles from './scss/Home.module.scss'
+import { useAppDispatch } from './hooks'
+import { setPageName } from './redux/slices/settingsSlice'
 
 type THomeProps = {
   data: { cardName: string; src: string }[]
 }
 
 const Home: React.FC<THomeProps> = ({ data }) => {
+	const dispatch = useAppDispatch()
+		dispatch(setPageName('home'))
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>

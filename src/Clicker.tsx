@@ -3,6 +3,9 @@ import { usePageVisibility } from 'react-page-visibility'
 import AnimateNumbers from './AnimateNumbers'
 import axios from 'axios'
 
+import { useAppDispatch } from './hooks'
+import { setPageName } from './redux/slices/settingsSlice'
+
 import styles from './scss/Clicker.module.scss'
 import { Link } from 'react-router-dom'
 
@@ -28,6 +31,9 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
   const isPageVisible = usePageVisibility()
 
   const currentCountRef = useRef(currentCount)
+	
+	const dispatch = useAppDispatch()
+	dispatch(setPageName(src))
 
   useEffect(() => {
     const intervalId = setInterval(() => {
