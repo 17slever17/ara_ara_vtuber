@@ -8,8 +8,8 @@ type THomeProps = {
 }
 
 const Home: React.FC<THomeProps> = ({ data }) => {
-	const dispatch = useAppDispatch()
-		dispatch(setPageName('home'))
+  const dispatch = useAppDispatch()
+  dispatch(setPageName('home'))
 
   return (
     <div className={styles.wrapper}>
@@ -17,12 +17,7 @@ const Home: React.FC<THomeProps> = ({ data }) => {
         <span className={styles.title}>Choice of sounds</span>
         <div className={styles.cards}>
           {data.map((vtuber, id) => (
-            <Card
-              key={id}
-              link={`/${vtuber.src}`}
-              imgUrl={`assets/${vtuber.src}/${vtuber.src}.jpg`}
-              title={`— ${vtuber.cardName} —`}
-            />
+            <Card key={id} link={`/${vtuber.src}`} imgUrl={`assets/${vtuber.src}/${vtuber.src}.jpg`} title={`— ${vtuber.cardName} —`} />
           ))}
         </div>
       </div>
