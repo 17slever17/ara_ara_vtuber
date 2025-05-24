@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
+import data from './data.json'
 import Clicker from './Clicker'
 import Home from './Home'
-import data from './data.json'
 import Settings from './Settings'
 
 const App: React.FC = () => {
