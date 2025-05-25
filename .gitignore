@@ -26,3 +26,4 @@ AnimateNumber.tsx
 AnimateNumbers 2.tsx
 measureText.ts
 .env.local
+.env

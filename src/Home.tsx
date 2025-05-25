@@ -1,14 +1,22 @@
 import Card from './Card'
 import styles from './scss/Home.module.scss'
+import useFetch from './plugins/api'
 
 type THomeProps = {
   data: { cardName: string; src: string }[]
 }
 
 const Home: React.FC<THomeProps> = ({ data }) => {
+const { response } = useFetch('/user')
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
+        <div>
+          <span className={styles.title}>
+            Добро пожаловать, {response?.entity.name || 'гость'}!
+          </span>
+        </div>
         <span className={styles.title}>Choice of sounds</span>
         <div className={styles.cards}>
           {data.map((vtuber, id) => (
