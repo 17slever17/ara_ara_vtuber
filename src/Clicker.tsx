@@ -2,15 +2,16 @@ import { useEffect, useRef, useState } from 'react'
 import { usePageVisibility } from 'react-page-visibility'
 import AnimateNumbers from './AnimateNumbers'
 import axios from 'axios'
-
-import { useAppDispatch } from './hooks'
-import { setPageName } from './redux/slices/settingsSlice'
-
-import styles from './scss/Clicker.module.scss'
 import { Link } from 'react-router-dom'
 
+import { useAppDispatch } from './hooks'
+import { setPageName, setName } from './redux/slices/settingsSlice'
+
+import styles from './scss/Clicker.module.scss'
+import themes from './scss/themes.module.scss'
+
 import ArrowIcon from './assets/arrowIcon.svg?react'
-import ParticleEffect from './ClickParticles'
+import ClickParticles from './ClickParticles'
 
 type TClickerProps = {
   id: number
@@ -31,9 +32,12 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
   const isPageVisible = usePageVisibility()
 
   const currentCountRef = useRef(currentCount)
-	
-	const dispatch = useAppDispatch()
-	dispatch(setPageName(src))
+
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    dispatch(setPageName(src))
+    dispatch(setName(name))
+  })
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -82,9 +86,7 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
   const clickAra = () => {
     setCount((prev) => prev + 1)
     setCurrentCount((prev) => prev + 1)
-    const sounds = [...Array(soundsCount).keys()]
-      .map((i) => i + 1)
-      .filter((num) => !lastSounds.includes(num))
+    const sounds = [...Array(soundsCount).keys()].map((i) => i + 1).filter((num) => !lastSounds.includes(num))
     const sound = sounds[Math.floor(Math.random() * sounds.length)]
     const audio = new Audio(`/assets/${src}/audio/${sound}.mp3`)
     audio.play()
@@ -92,25 +94,21 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
   }
 
   return (
-    <div className={`${styles.container} ${styles[src]}`}>
-      <div className={styles.linkWrapper}>
+    <div className={`${styles.container} ${themes[`${src}-clicker`]}`}>
+      <div className='linkWrapper'>
         <Link to='/home' className={`${styles.link} ${styles.linkBtn}`}>
           <div className={`${styles.linkContainer} ${styles.linkContainerAbsolute}`}>
             <ArrowIcon className={styles.arrow} />
-            <span className={styles.linkTitle}>Home</span>
+            <span className={'linkTitle'}>Home</span>
           </div>
         </Link>
       </div>
       <div className={styles.worldCounter}>
-        {wcount ? (
-          <AnimateNumbers children={wcount + currentCount} />
-        ) : (
-          <span className={styles.count}>—</span>
-        )}
+        {wcount ? <AnimateNumbers children={wcount + currentCount} /> : <span className={styles.count}>—</span>}
         <span className={styles.title}>Global {sound} Counter</span>
       </div>
       <div className={styles.myCounter}>
-        <ParticleEffect>
+        <ClickParticles>
           <img
             className={styles.gif}
             src={`/assets/${src}/${src}.gif`}
@@ -118,10 +116,10 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
             draggable='false'
             onClick={() => clickAra()}
           ></img>
-        </ParticleEffect>
+        </ClickParticles>
 
         <div className={styles.counter}>
-          <span className={styles.title}>{sound} Counter: </span>
+          <span className={styles.title}>Your {sound} Counter: </span>
           <span className={styles.count}>{count}</span>
         </div>
       </div>

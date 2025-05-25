@@ -1,40 +1,8 @@
-import React, { useState, useEffect } from 'react'
-
-interface ParticleProps {
-  x: number
-  y: number
-  dx: number
-  dy: number
-  size: number
-  duration?: number
-}
-
-const Particle: React.FC<ParticleProps> = ({ x, y, dx, dy, size, duration = 700 }) => {
-  const [animate, setAnimate] = useState<boolean>(false)
-
-  useEffect(() => {
-    setAnimate(true)
-  }, [])
-
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        left: x,
-        top: y,
-        width: size,
-        height: size,
-        backgroundColor: 'aqua', // цвет частиц
-        borderRadius: '50%',
-        pointerEvents: 'none',
-        transition: `transform ${duration}ms ease-out, opacity ${duration}ms ease-in`,
-        transform: animate ? `translate(${dx}px, ${dy}px)` : 'translate(0, 0)',
-        opacity: animate ? 0 : 1,
-        mixBlendMode: 'difference'
-      }}
-    />
-  )
-}
+// ParticleEffect.tsx
+import React, { useState, useRef, useLayoutEffect } from 'react'
+import Particle, { ParticleProps } from './Particle'
+import { selectSettings } from './redux/slices/settingsSlice'
+import { useAppSelector } from './hooks'
 
 interface IParticle extends ParticleProps {
   id: number
@@ -44,24 +12,46 @@ interface ParticleEffectProps {
   children: React.ReactNode
 }
 
-const ParticleEffect: React.FC<ParticleEffectProps> = ({ children }) => {
+const EMOTE_COUNT = 12
+
+const ClickParticles: React.FC<ParticleEffectProps> = ({ children }) => {
   const [particles, setParticles] = useState<IParticle[]>([])
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [containerSize, setContainerSize] = useState({ w: 0, h: 0 })
+  const { name, page, clickParticles } = useAppSelector(selectSettings)
 
-  const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const containerRect = event.currentTarget.getBoundingClientRect()
-    const x = event.clientX - containerRect.left
-    const y = event.clientY - containerRect.top
+  useLayoutEffect(() => {
+    if (containerRef.current) {
+      const { width, height } = containerRef.current.getBoundingClientRect()
+      setContainerSize({ w: width, h: height })
+    }
+  }, [])
 
-    // Генерируем случайное количество частиц от 8 до 15
-    const count = Math.floor(Math.random() * (10 - 7 + 1)) + 7
+  const handleClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    if (!containerRef.current) return
+    const rect = containerRef.current.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+
+    const count = Math.floor(Math.random() * 5) + 5 // 5–12 эмодзи
     const newParticles: IParticle[] = []
 
     for (let i = 0; i < count; i++) {
       const angle = Math.random() * 2 * Math.PI
-      const distance = Math.random() * (70 - 45) + 45 // расстояние от 15 до 20 пикселей
+      const baseDistance = Math.random() * 25 + 45 // 45–70
+      const distance = baseDistance * 2 // в 2 раза дальше
       const dx = Math.cos(angle) * distance
       const dy = Math.sin(angle) * distance
-      const size = Math.random() * (8 - 4) + 4 // размер от 5 до 10 пикселей
+
+      // размер 5% от ширины контейнера × 3
+      const baseSize = containerSize.w * 0.05
+      const size = baseSize * 3.2 * (Math.random() * 0.3 + 0.7)
+
+      const rotation = Math.random() * 720 - 360 // –360…+360°
+      // выбираем случайный индекс от 1 до EMOTE_COUNT
+			const indexes = clickParticles[page]
+      const emoteIndex = indexes[Math.floor(Math.random() * indexes.length)]
+      const src = `/assets/emotes/${name}/${emoteIndex}.png`
 
       newParticles.push({
         id: Date.now() + i,
@@ -69,26 +59,20 @@ const ParticleEffect: React.FC<ParticleEffectProps> = ({ children }) => {
         y,
         dx,
         dy,
-        size
+        size,
+        rotation,
+        src
       })
     }
 
     setParticles((prev) => [...prev, ...newParticles])
-
-    // Удаляем частицы после окончания анимации (700 мс)
     setTimeout(() => {
       setParticles((prev) => prev.filter((p) => !newParticles.some((np) => np.id === p.id)))
     }, 700)
   }
 
   return (
-    <div
-      onClick={handleClick}
-      style={{
-        position: 'relative',
-        display: 'inline-block'
-      }}
-    >
+    <div ref={containerRef} onClick={handleClick} style={{ position: 'relative', display: 'inline-block' }}>
       {children}
       {particles.map((p) => (
         <Particle key={p.id} {...p} />
@@ -97,4 +81,4 @@ const ParticleEffect: React.FC<ParticleEffectProps> = ({ children }) => {
   )
 }
 
-export default ParticleEffect
+export default ClickParticles

@@ -3,10 +3,12 @@ import data from './data.json'
 import Clicker from './Clicker'
 import Home from './Home'
 import Settings from './Settings'
+import SettingsStorageSync from './utils/SettingsStorageSync'
 
 const App: React.FC = () => {
   return (
     <>
+      <SettingsStorageSync />
       <Settings />
       <Routes>
         <Route path='/' element={<Home data={data} />}></Route>

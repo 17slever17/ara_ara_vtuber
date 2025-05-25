@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useAppSelector } from './hooks'
 import { selectSettings } from './redux/slices/settingsSlice'
 import styles from './scss/Menu.module.scss'
+import themes from './scss/themes.module.scss'
 import Gear from './assets/gear.svg?react'
 import Menu from './Menu'
 
@@ -15,7 +16,7 @@ const Settings: React.FC<{}> = () => {
         onClick={() => setIsOpen((prev) => !prev)}
         aria-label='Toggle menu'
       >
-        <Gear className={`${styles.gear} ${isOpen ? styles.open : ''} ${styles[page]}`} />
+        <Gear className={`${styles.gear} ${isOpen ? styles.open : ''} ${themes[`${page}-gear`]}`} />
       </button>
       <Menu isOpen={isOpen} />
     </div>

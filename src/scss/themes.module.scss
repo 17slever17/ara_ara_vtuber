@@ -1,0 +1,115 @@
+@use 'variables' as v;
+@use 'sass:color';
+
+@mixin clickerTheme($color) {
+  background-color: $color;
+
+  & :global(.linkWrapper) {
+    & * {
+      stroke: $color;
+    }
+    & :global(.linkTitle) {
+      color: $color;
+    }
+    &:hover {
+      & * {
+        color: color.adjust($color, $lightness: 8%);
+        stroke: color.adjust($color, $lightness: 8%);
+      }
+    }
+    &:active {
+      & * {
+        color: color.adjust($color, $lightness: -8%);
+        stroke: color.adjust($color, $lightness: -8%);
+      }
+    }
+  }
+}
+
+@mixin gearTheme($color) {
+  & * {
+    stroke: $color;
+  }
+}
+
+@mixin cardTheme($color) {
+  background-color: $color;
+}
+
+.home {
+	&-clicker {
+		@include clickerTheme(#111111);
+	}
+	&-gear {
+		@include gearTheme(#111111);
+	}
+	&-card {
+		@include cardTheme(#111111);
+	}
+}
+
+.shylily-ara-ara,
+.shylily-womp-womp {
+  $color: v.$blue-violet;
+  &-clicker {
+    @include clickerTheme($color);
+  }
+  &-gear {
+    @include gearTheme($color);
+  }
+  &-card {
+    @include cardTheme($color);
+  }
+}
+
+.filian-ara-ara {
+  $color: v.$purple;
+  &-clicker {
+    @include clickerTheme($color);
+  }
+  &-gear {
+    @include gearTheme($color);
+  }
+  &-card {
+    @include cardTheme($color);
+  }
+}
+
+.kobo-ara-ara {
+  $color: v.$blue-light;
+  &-clicker {
+    @include clickerTheme($color);
+  }
+  &-gear {
+    @include gearTheme($color);
+  }
+  &-card {
+    @include cardTheme($color);
+  }
+}
+
+.gura-ara-ara {
+  $color: v.$green;
+  &-clicker {
+    @include clickerTheme($color);
+  }
+  &-gear {
+    @include gearTheme($color);
+  }
+  &-card {
+    @include cardTheme($color);
+  }
+}
+
+.calli-ara-ara {
+  $color: v.$pink;
+  &-clicker {
+    @include clickerTheme($color);
+  }
+  &-gear {
+    @include gearTheme($color);
+  }
+  &-card {
+    @include cardTheme($color);
+  }
+}

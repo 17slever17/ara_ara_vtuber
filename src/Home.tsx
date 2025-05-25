@@ -2,6 +2,7 @@ import Card from './Card'
 import styles from './scss/Home.module.scss'
 import { useAppDispatch } from './hooks'
 import { setPageName } from './redux/slices/settingsSlice'
+import { useEffect } from 'react'
 
 type THomeProps = {
   data: { cardName: string; src: string }[]
@@ -9,7 +10,9 @@ type THomeProps = {
 
 const Home: React.FC<THomeProps> = ({ data }) => {
   const dispatch = useAppDispatch()
-  dispatch(setPageName('home'))
+  useEffect(() => {
+    dispatch(setPageName('home'))
+  }, [])
 
   return (
     <div className={styles.wrapper}>
@@ -17,23 +20,29 @@ const Home: React.FC<THomeProps> = ({ data }) => {
         <span className={styles.title}>Choice of sounds</span>
         <div className={styles.cards}>
           {data.map((vtuber, id) => (
-            <Card key={id} link={`/${vtuber.src}`} imgUrl={`assets/${vtuber.src}/${vtuber.src}.jpg`} title={`— ${vtuber.cardName} —`} />
+            <Card
+              key={id}
+              link={`/${vtuber.src}`}
+              imgUrl={`assets/${vtuber.src}/${vtuber.src}.jpg`}
+              title={`— ${vtuber.cardName} —`}
+            />
           ))}
         </div>
       </div>
       <footer className={styles.footer}>
-        <span>
+        <span className={styles.link1}>
+          Suggestions and errors:{' '}
+          <a href='https://forms.gle/DwwvxLLsWMk7Wv3N6' target='_blank'>
+            Google Form
+          </a>
+        </span>
+        <span className={styles.link2}>
           Created by{' '}
           <a href='https://www.youtube.com/@slever17' target='_blank'>
             -SleveR-
           </a>
         </span>
-        <span>
-          Mostly gifs from{' '}
-          <a href='https://www.youtube.com/@CuteCafe' target='_blank'>
-            CuteCafe
-          </a>
-        </span>
+        <span className={styles.link3}>Support: b; d</span>
       </footer>
     </div>
   )

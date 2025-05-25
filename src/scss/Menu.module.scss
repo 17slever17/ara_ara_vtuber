@@ -1,13 +1,5 @@
 @use './variables' as v;
 
-@mixin theme($color) {
-  & * {
-    stroke: $color;
-  }
-  .linkTitle {
-    color: $color;
-  }
-}
 .container {
   display: flex;
   flex-direction: column;
@@ -44,7 +36,7 @@
     right: 50px;
     z-index: 10;
     transition: all 0.2s ease-in-out;
-		visibility: hidden;
+    visibility: hidden;
     .settingsMenu {
       transition: all 0.2s ease-in-out;
       background-color: white;
@@ -55,10 +47,17 @@
       padding: 10px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 5px;
+      .countTitle,
       .selectSection {
-        transform: translateY(-100%);
+        transform: translateY(-100px);
         transition: all 0.2s ease-in-out;
+      }
+      .countTitle {
+        font-size: 20px;
+        text-align: center;
+      }
+      .selectSection {
         display: flex;
         flex-direction: column;
         gap: 5px;
@@ -75,20 +74,63 @@
             justify-self: center;
             width: 45px;
             height: 45px;
-            background-color: #698bed;
+						border: 0 solid white;
+						transition: border-color 0.2s ease-in-out;
             border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            .lockContainer {
+              position: absolute;
+              z-index: 10;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: flex-end;
+              width: 100%;
+              height: 100%;
+              .lock {
+                $lock-size: 24px;
+                width: $lock-size;
+                height: $lock-size;
+                & * {
+                  stroke: white;
+                }
+              }
+              .goal {
+                font-size: 12px;
+                color: white;
+              }
+            }
+
+            .locked {
+              position: absolute;
+              z-index: 5;
+              background-color: black;
+              opacity: 0.5;
+              height: 100%;
+              width: 100%;
+            }
+            .img {
+              width: auto;
+              height: 100%;
+            }
           }
         }
+				.selectedCard {
+					border: 2px solid rgb(34, 203, 34) !important;
+				}
         .title {
           font-size: 16px;
         }
       }
     }
     &.openedMenu {
-			visibility: visible;
+      visibility: visible;
       .settingsMenu {
         clip-path: inset(0 0 0 0);
         opacity: 1;
+        .countTitle,
         .selectSection {
           transform: translateY(0);
           opacity: 1;
@@ -96,25 +138,4 @@
       }
     }
   }
-}
-
-.shylily-ara-ara,
-.shylily-womp-womp {
-  @include theme(v.$blue-violet);
-}
-
-.filian-ara-ara {
-  @include theme(v.$purple);
-}
-
-.kobo-ara-ara {
-  @include theme(v.$blue-light);
-}
-
-.gura-ara-ara {
-  @include theme(v.$green);
-}
-
-.calli-ara-ara {
-  @include theme(v.$pink);
 }

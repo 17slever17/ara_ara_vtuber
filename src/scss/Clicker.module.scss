@@ -1,31 +1,5 @@
 @use './_normalize.scss';
 @use './variables' as v;
-@use 'sass:color';
-
-@mixin theme($color) {
-  background-color: $color;
-
-  .linkWrapper {
-    & * {
-      stroke: $color;
-    }
-    .linkTitle {
-      color: $color;
-    }
-    &:hover {
-      & * {
-        color: color.adjust($color, $lightness: 8%);
-        stroke: color.adjust($color, $lightness: 8%);
-      }
-    }
-    &:active {
-      & * {
-        color: color.adjust($color, $lightness: -8%);
-        stroke: color.adjust($color, $lightness: -8%);
-      }
-    }
-  }
-}
 
 .container {
   position: relative;
@@ -86,38 +60,38 @@
       font-size: 12px;
     }
   }
-}
-.linkWrapper {
-  position: absolute;
-  left: 50px;
-  top: 30px;
-  .link {
-    .linkContainer {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      .arrow {
-        rotate: 180deg;
+  & :global(.linkWrapper) {
+    position: absolute;
+    left: 50px;
+    top: 30px;
+    .link {
+      .linkContainer {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        .arrow {
+          rotate: 180deg;
+        }
+        span {
+          transition: margin 0.1s ease-in-out;
+        }
       }
-      span {
-        transition: margin 0.1s ease-in-out;
+      & :global(.linkTitle) {
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 1.2;
+      }
+      &:hover {
+        cursor: pointer;
+        span {
+          margin-left: 7px;
+        }
       }
     }
-    .linkTitle {
-      font-weight: 600;
-      font-size: 18px;
-      line-height: 1.2;
+    @media (max-width: 500px) {
+      left: 30px;
+      top: 20px;
     }
-    &:hover {
-      cursor: pointer;
-      span {
-        margin-left: 7px;
-      }
-    }
-  }
-  @media (max-width: 500px) {
-    left: 30px;
-    top: 20px;
   }
 }
 
@@ -131,25 +105,4 @@
   .linkContainerAbsolute {
     position: absolute;
   }
-}
-
-.shylily-ara-ara,
-.shylily-womp-womp {
-  @include theme(v.$blue-violet);
-}
-
-.filian-ara-ara {
-  @include theme(v.$purple);
-}
-
-.kobo-ara-ara {
-  @include theme(v.$blue-light);
-}
-
-.gura-ara-ara {
-  @include theme(v.$green);
-}
-
-.calli-ara-ara {
-  @include theme(v.$pink);
 }
