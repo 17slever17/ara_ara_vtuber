@@ -1,17 +1,17 @@
 import Card from './Card'
 import styles from './scss/Home.module.scss'
-import { useAppDispatch } from './hooks'
-import { setPageName } from './redux/slices/settingsSlice'
+import { useAppDispatch } from './hooks/hooks'
+import { setSlug } from './redux/slices/settingsSlice'
 import { useEffect } from 'react'
 
 type THomeProps = {
-  data: { cardName: string; src: string }[]
+  data: { cardName: string; slug: string }[]
 }
 
 const Home: React.FC<THomeProps> = ({ data }) => {
   const dispatch = useAppDispatch()
   useEffect(() => {
-    dispatch(setPageName('home'))
+    dispatch(setSlug('home'))
   }, [])
 
   return (
@@ -22,8 +22,8 @@ const Home: React.FC<THomeProps> = ({ data }) => {
           {data.map((vtuber, id) => (
             <Card
               key={id}
-              link={`/${vtuber.src}`}
-              imgUrl={`assets/${vtuber.src}/${vtuber.src}.jpg`}
+              link={`/${vtuber.slug}`}
+              imgUrl={`assets/${vtuber.slug}/${vtuber.slug}.jpg`}
               title={`— ${vtuber.cardName} —`}
             />
           ))}

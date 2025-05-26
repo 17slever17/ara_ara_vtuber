@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import AnimateNumbers from './AnimateNumbers'
 import { Link } from 'react-router-dom'
 
-import { useAppDispatch } from './hooks'
-import { setPageName, setName } from './redux/slices/settingsSlice'
+import { useAppDispatch } from './hooks/hooks'
+import { setSlug, setName } from './redux/slices/settingsSlice'
 import useCounterSync from './hooks/useCounterSync'
 
 import styles from './scss/Clicker.module.scss'
@@ -14,48 +14,40 @@ import ClickParticles from './ClickParticles'
 
 type TClickerProps = {
   id: number
-  src: string
+  slug: string
   name: string
   link: string
   sound: string
   soundsCount: number
 }
 
-const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCount }) => {
+const Clicker: React.FC<TClickerProps> = ({ id, slug, name, link, sound, soundsCount }) => {
   const oversounds = Math.min(soundsCount - 2, Math.max(4, Math.floor(soundsCount / 5)))
-  const [localCount, setLocalCount] = useState(0)
-  const [currentCount, setCurrentCount] = useState(0)
+  const [myLocalCount, setMyLocalCount] = useState(0)
+  const pendingRef = useRef(0)
   const [lastSounds, setLastSounds] = useState(Array(oversounds).fill(0))
 
   // Redux-настройка страницы
   const dispatch = useAppDispatch()
   useEffect(() => {
-    dispatch(setPageName(src))
+    dispatch(setSlug(slug))
     dispatch(setName(name))
-  }, [dispatch, src, name])
+  }, [dispatch, slug, name])
 
-  const { globalCount, isLoading, isError, currentCountRef, resetCurrent, syncNow } = useCounterSync(
-    id,
-    currentCount,
-    setCurrentCount
-  )
+  const { globalCount, isLoading, isError, syncNow } = useCounterSync(id, setMyLocalCount, pendingRef)
 
   const clickAra = () => {
-    setLocalCount((prev) => prev + 1)
-    setCurrentCount((prev) => prev + 1)
-
-    // Логика звуков
-    const available = [...Array(soundsCount).keys()]
-      .map((i) => i + 1)
-      .filter((num) => !lastSounds.includes(num))
+    setMyLocalCount((prev) => prev + 1)
+    pendingRef.current += 1
+    const available = [...Array(soundsCount).keys()].map((i) => i + 1).filter((num) => !lastSounds.includes(num))
     const choice = available[Math.floor(Math.random() * available.length)]
-    const audio = new Audio(`/assets/${src}/audio/${choice}.mp3`)
+    const audio = new Audio(`/assets/${slug}/audio/${choice}.mp3`)
     audio.play()
     setLastSounds((prev) => [...prev.slice(1), choice])
   }
 
   return (
-    <div className={`${styles.container} ${themes[`${src}-clicker`]}`}>
+    <div className={`${styles.container} ${themes[`${slug}-clicker`]}`}>
       <div className='linkWrapper'>
         <Link to='/home' className={`${styles.link} ${styles.linkBtn}`}>
           <div className={`${styles.linkContainer} ${styles.linkContainerAbsolute}`}>
@@ -65,12 +57,8 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
         </Link>
       </div>
       <div className={styles.worldCounter}>
-        {(() => {
-          console.log(globalCount, 'globalCount', currentCount, 'currentCount')
-          return null
-        })()}
         {globalCount ? (
-          <AnimateNumbers children={globalCount + currentCountRef.current} />
+          <AnimateNumbers children={globalCount + myLocalCount} />
         ) : (
           <span className={styles.count}>—</span>
         )}
@@ -80,7 +68,7 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
         <ClickParticles>
           <img
             className={styles.gif}
-            src={`/assets/${src}/${src}.gif`}
+            src={`/assets/${slug}/${slug}.gif`}
             alt='vtuber'
             draggable='false'
             onClick={() => clickAra()}
@@ -89,7 +77,7 @@ const Clicker: React.FC<TClickerProps> = ({ id, src, name, link, sound, soundsCo
 
         <div className={styles.counter}>
           <span className={styles.title}>Your {sound} Counter: </span>
-          <span className={styles.count}>{localCount}</span>
+          <span className={styles.count}>{myLocalCount}</span>
         </div>
       </div>
       <div className={styles.desc}>

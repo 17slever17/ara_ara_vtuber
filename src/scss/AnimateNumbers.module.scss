@@ -1,5 +1,23 @@
-.count {
-  user-select: none;
-  font-size: 64px;
-  font-weight: bold;
+.numbers {
+  display: inline-flex;
+  height: 87px;
+  overflow: hidden;
+  .number {
+    display: inline-flex;
+    flex-direction: column;
+    position: relative;
+    transition: all 0.5s;
+  }
+}
+.digit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  transition: all 0.5s;
+  .count {
+    user-select: none;
+    font-size: 64px;
+    font-weight: bold;
+  }
 }

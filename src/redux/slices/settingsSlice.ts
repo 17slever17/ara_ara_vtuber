@@ -14,16 +14,17 @@ const getInitialSettings = (): Partial<SettingsSliceState> => {
 }
 
 interface SettingsSliceState {
-  page: string
+  slug: string
   name: string
   backgroundPattern: number | null
   fallingParticles: number | null
   clickParticles: { [name: string]: number[] }
-  clickCount: { [name: string]: number }
+  localCounts: { [name: string]: number }
+  globalCount: number
 }
 
 export const initialState: SettingsSliceState = {
-  page: 'home',
+  slug: 'home',
   name: 'home',
   backgroundPattern: null,
   fallingParticles: null,
@@ -35,7 +36,7 @@ export const initialState: SettingsSliceState = {
     'shylily-ara-ara': [1],
     'kobo-ara-ara': [1]
   },
-  clickCount: {
+  localCounts: {
     'shylily-womp-womp': 1120000,
     'calli-ara-ara': 1200000,
     'filian-ara-ara': 1300000,
@@ -43,6 +44,7 @@ export const initialState: SettingsSliceState = {
     'shylily-ara-ara': 150000000,
     'kobo-ara-ara': 16000000
   },
+  globalCount: 0,
   ...getInitialSettings()
 }
 
@@ -50,15 +52,25 @@ const settingsSlice = createSlice({
   name: 'settings',
   initialState,
   reducers: {
-    setPageName(state, action: PayloadAction<string>) {
-      state.page = action.payload
+    setSlug(state, action: PayloadAction<string>) {
+      state.slug = action.payload
     },
     setName(state, action: PayloadAction<string>) {
       state.name = action.payload
     },
+    setLocalCount(state, action: PayloadAction<{ count: number; slug: string }>) {
+      const { slug, count } = action.payload
+      state.localCounts = {
+        ...state.localCounts,
+        [slug]: count
+      }
+    },
+    setGlobalCount(state, action: PayloadAction<number>) {
+      state.globalCount = action.payload
+    },
     setBackgroundPattern(state, action: PayloadAction<number | null>) {
       if (
-        goals.global.backgrounds[action.payload ? action.payload.toString() : ''] <= calcTotalCount(state.clickCount)
+        goals.global.backgrounds[action.payload ? action.payload.toString() : ''] <= calcTotalCount(state.localCounts)
       ) {
         if (state.backgroundPattern === action.payload) {
           state.backgroundPattern = null
@@ -66,26 +78,33 @@ const settingsSlice = createSlice({
       }
     },
     setFallingParticles(state, action: PayloadAction<number | null>) {
-      if (goals.global.fallings[action.payload ? action.payload.toString() : ''] <= calcTotalCount(state.clickCount)) {
+      if (goals.global.fallings[action.payload ? action.payload.toString() : ''] <= calcTotalCount(state.localCounts)) {
         if (state.fallingParticles === action.payload) {
           state.fallingParticles = null
         } else state.fallingParticles = action.payload
       }
     },
-    setClickParticles(state, action: PayloadAction<{ id: number; page: string }>) {
-      if (goals.local[action.payload['id'].toString()] <= state.clickCount[action.payload['page']]) {
-        const index = state.clickParticles[action.payload['page']].indexOf(action.payload['id'])
+    setClickParticles(state, action: PayloadAction<{ id: number; slug: string }>) {
+      if (goals.local[action.payload['id'].toString()] <= state.localCounts[action.payload['slug']]) {
+        const index = state.clickParticles[action.payload['slug']].indexOf(action.payload['id'])
         if (index !== -1) {
-          if (state.clickParticles[action.payload['page']].length > 1)
-            state.clickParticles[action.payload['page']].splice(index, 1)
-        } else state.clickParticles[action.payload['page']].push(action.payload['id'])
+          if (state.clickParticles[action.payload['slug']].length > 1)
+            state.clickParticles[action.payload['slug']].splice(index, 1)
+        } else state.clickParticles[action.payload['slug']].push(action.payload['id'])
       }
     }
   }
 })
 
 export const selectSettings = (state: RootState) => state.settings
-export const { setPageName, setName, setBackgroundPattern, setFallingParticles, setClickParticles } =
-  settingsSlice.actions
+export const {
+  setSlug,
+  setName,
+  setLocalCount,
+  setGlobalCount,
+  setBackgroundPattern,
+  setFallingParticles,
+  setClickParticles
+} = settingsSlice.actions
 
 export default settingsSlice.reducer

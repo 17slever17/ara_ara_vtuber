@@ -1,8 +1,7 @@
-// ParticleEffect.tsx
 import React, { useState, useRef, useLayoutEffect } from 'react'
 import Particle, { ParticleProps } from './Particle'
 import { selectSettings } from './redux/slices/settingsSlice'
-import { useAppSelector } from './hooks'
+import { useAppSelector } from './hooks/hooks'
 
 interface IParticle extends ParticleProps {
   id: number
@@ -12,13 +11,11 @@ interface ParticleEffectProps {
   children: React.ReactNode
 }
 
-const EMOTE_COUNT = 12
-
 const ClickParticles: React.FC<ParticleEffectProps> = ({ children }) => {
   const [particles, setParticles] = useState<IParticle[]>([])
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerSize, setContainerSize] = useState({ w: 0, h: 0 })
-  const { name, page, clickParticles } = useAppSelector(selectSettings)
+  const { name, slug, clickParticles } = useAppSelector(selectSettings)
 
   useLayoutEffect(() => {
     if (containerRef.current) {
@@ -49,7 +46,7 @@ const ClickParticles: React.FC<ParticleEffectProps> = ({ children }) => {
 
       const rotation = Math.random() * 720 - 360 // –360…+360°
       // выбираем случайный индекс от 1 до EMOTE_COUNT
-			const indexes = clickParticles[page]
+			const indexes = clickParticles[slug]
       const emoteIndex = indexes[Math.floor(Math.random() * indexes.length)]
       const src = `/assets/emotes/${name}/${emoteIndex}.png`
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useAppSelector } from '../hooks'
+import { useAppSelector } from '../hooks/hooks'
 import { selectSettings } from '../redux/slices/settingsSlice'
 
 const SettingsStorageSync: React.FC = () => {

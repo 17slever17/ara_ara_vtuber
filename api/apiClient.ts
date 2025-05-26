@@ -1,5 +1,5 @@
-const API_URL = 'https://positively-quiet-marlin.ngrok-free.app/api'
-
+const API_URL = process.env.REACT_APP_API_URL
+//'http://localhost:5000/api'
 export async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${API_URL}${path}`, {
     headers: {

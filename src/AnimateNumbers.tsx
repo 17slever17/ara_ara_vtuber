@@ -32,23 +32,28 @@ const AnimateNumbers: React.FC<TAnimateNumberProps> = ({ children }) => {
   }, [children, prevChildren])
 
   return (
-    <div className={styles.numbers} style={{ display: 'inline-flex', height: 87, overflow: 'hidden' }}>
+    <div className={styles.numbers}>
       {String(children)
         .split('')
-        .map((digit, index) => (
-          <div
-            key={index}
-            style={{
-              display: 'inline-flex',
-              flexDirection: 'column',
-              position: 'relative',
-              width: `${widths[digit]}px`,
-							transition: 'all 0.5s'
-            }}
-          >
-            <AnimatedDigit digit={Number(digit)} />
-          </div>
-        ))}
+        .reverse()
+        .map((digit, index) => {
+          const realIndex = String(children).length - 1 - index
+          const isThousandGroup = index !== 0 && index % 3 === 0
+
+          return (
+            <div
+              key={realIndex}
+              className={styles.number}
+              style={{
+                width: `${widths[digit]}px`,
+                marginRight: isThousandGroup ? '16px' : '0px' // или paddingLeft, на вкус
+              }}
+            >
+              <AnimatedDigit digit={Number(digit)} />
+            </div>
+          )
+        })
+        .reverse()}
     </div>
   )
 }
@@ -64,15 +69,10 @@ const AnimatedDigit: React.FC<TAnimatedDigitProps> = ({ digit }) => {
   }, [digit])
 
   return (
-    <span
+    <span className={styles.digit}
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-				width: `${widths[digit]}px`,
-        position: 'absolute',
+        width: `${widths[digit]}px`,
         transform: `translateY(-${offset}%)`,
-        transition: 'all 0.5s'
       }}
     >
       {Array.from({ length: 10 }, (_, idx) => (

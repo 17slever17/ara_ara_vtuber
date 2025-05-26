@@ -2,10 +2,9 @@ import styles from './scss/Menu.module.scss'
 import themes from './scss/themes.module.scss'
 import LockIcon from './assets/lock.svg?react'
 import React from 'react'
-import { useAppSelector } from './hooks'
+import { useAppSelector } from './hooks/hooks'
 import { selectSettings } from './redux/slices/settingsSlice'
 import goalsJson from './goals.json'
-import { calcTotalCount } from './utils/calcTotalCount'
 
 type GoalsType = {
   local: Record<string, number>
@@ -25,11 +24,12 @@ type CardBlockProps = {
 }
 
 const CardBlock: React.FC<CardBlockProps> = ({ items, src, title, onSelect }: CardBlockProps) => {
-  const { page, name, backgroundPattern, fallingParticles, clickParticles, clickCount } = useAppSelector(selectSettings)
+  const { slug, name, backgroundPattern, fallingParticles, clickParticles, localCounts, globalCount } =
+    useAppSelector(selectSettings)
   const pattern = (id: number) => {
     if (src === 'backgrounds') return id === backgroundPattern ? styles.selectedCard : ''
     if (src === 'fallings') return id === fallingParticles ? styles.selectedCard : ''
-    if (src === 'emotes') return clickParticles[page].includes(id) ? styles.selectedCard : ''
+    if (src === 'emotes') return clickParticles[slug].includes(id) ? styles.selectedCard : ''
   }
   const goal = (id: string) => {
     if (src === 'backgrounds') return goals.global.backgrounds[id]
@@ -44,19 +44,19 @@ const CardBlock: React.FC<CardBlockProps> = ({ items, src, title, onSelect }: Ca
     return (num / 10 ** (n * 3)).toFixed(1).replace(/\.0$/, '') + 'k'.repeat(n)
   }
   const goalReached = (id: number) => {
-    if (src === 'backgrounds' || src === 'fallings') return calcTotalCount(clickCount) <= goal(id.toString())
-    if (src === 'emotes') return clickCount[page] <= goal(id.toString())
+    if (src === 'backgrounds' || src === 'fallings') return globalCount <= goal(id.toString())
+    if (src === 'emotes') return localCounts[slug] <= goal(id.toString())
     return 0
   }
 
-  if (src === 'emotes' && page === 'home') return <></>
+  if (src === 'emotes' && slug === 'home') return <></>
   return (
     <div className={styles.selectSection}>
       <span className={styles.title}>{title}:</span>
       <div className={styles.wrapper}>
         {items.map((id) => (
           <div
-            className={`${styles.card} ${themes[`${page}-card`]} ${pattern(id)}`}
+            className={`${styles.card} ${themes[`${slug}-card`]} ${pattern(id)}`}
             key={id}
             onClick={() => onSelect(id)}
           >

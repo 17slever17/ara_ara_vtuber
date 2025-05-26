@@ -1,32 +1,32 @@
 [
   {
     "id": 1,
-    "src": "shylily-womp-womp",
+    "slug": "shylily-womp-womp",
     "count": 6723
   },
   {
     "id": 2,
-    "src": "calli-ara-ara",
+    "slug": "calli-ara-ara",
     "count": 12345
   },
   {
     "id": 3,
-    "src": "filian-ara-ara",
+    "slug": "filian-ara-ara",
     "count": 3357
   },
   {
     "id": 4,
-    "src": "gura-ara-ara",
+    "slug": "gura-ara-ara",
     "count": 1513
   },
   {
     "id": 5,
-    "src": "shylily-ara-ara",
+    "slug": "shylily-ara-ara",
     "count": 14920
   },
   {
     "id": 6,
-    "src": "kobo-ara-ara",
+    "slug": "kobo-ara-ara",
     "count": 12326
   }
 ]

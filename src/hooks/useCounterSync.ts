@@ -1,63 +1,63 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, MutableRefObject, Dispatch, SetStateAction, useRef } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { apiFetch } from '../api/apiClient'
+import { apiFetch } from '../../api/apiClient'
+import { useAppDispatch } from './hooks'
+import { setLocalCount } from '../redux/slices/settingsSlice'
 
 function useCounterSync(
   id: string | number,
-  currentCount: number,
-  setCurrentCount: (count: number) => void
+  setMyLocalCount: Dispatch<SetStateAction<number>>,
+  pendingRef: MutableRefObject<number>
 ) {
+  const lastSyncTimeRef = useRef(Date.now())
+  const dispatch = useAppDispatch()
   const queryClient = useQueryClient()
-  const currentCountRef = useRef(currentCount)
-
-  // Обновляем ref при каждом изменении currentCount
-  useEffect(() => {
-    currentCountRef.current = currentCount
-  }, [currentCount])
 
   // Запрос глобального счётчика
   const {
-    data: globalCount = 0,
+    data = { clicks: 0, slug: '' },
     isLoading,
     isError,
     refetch
   } = useQuery({
     queryKey: ['counter', id],
     queryFn: async () => {
-      const data = await apiFetch<{ data: { total: number } }>(`/phrases/${id}/total`)
-      console.log(data, 'get')
-      if (typeof data.data.total !== 'number') {
-        throw new Error('Сервер не вернул count')
+      const data = await apiFetch<{ data: { clicks: number; slug: string }, message: string }>(`/phrases/${id}/total`)
+      console.log(data.data, 'get data')
+      if (data.message === 'Error') {
+        throw new Error('Ошибка получения локального количества кликов')
       }
-      return data.data.total
+      return data.data
     },
-    // первый запрос только один раз, без авто-рефетча
-    refetchOnMount: false,
+    refetchOnMount: true,
     refetchOnWindowFocus: false
   })
 
   // Мутация для инкремента
   const { mutateAsync } = useMutation({
     mutationFn: async (incrementAmount: number) => {
-      const data = await apiFetch<{ data: { total: number } }>(`/phrases/${id}/click`, {
+      const data = await apiFetch<{ data: { clicks: number; slug: string } }>(`/phrases/${id}/add-clicks`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount: incrementAmount })
       })
-      console.log(data, 'post')
-      return data.data.total
+      console.log(data.data, 'post data')
+      return data.data
     }
   })
 
   // Функция синхронизации
   const syncNow = async () => {
     try {
-      if (currentCountRef.current !== 0) {
+      const amount = pendingRef.current
+      if (amount !== 0) {
+        pendingRef.current = 0
         // инкремент на amount = накопленные клики
-
-        const newValue = await mutateAsync(currentCountRef.current)
-        queryClient.setQueryData(['counter', id], newValue)
-        setCurrentCount(0)
+        const data = await mutateAsync(amount)
+        queryClient.setQueryData(['counter', id], data)
+        dispatch(setLocalCount({ count: data.clicks, slug: data.slug }))
+        setMyLocalCount((lc) => Math.max(0, lc - amount))
+        lastSyncTimeRef.current = Date.now()
       } else {
         // просто обновить значение
         await refetch()
@@ -69,9 +69,13 @@ function useCounterSync(
 
   // Интервал синхронизации каждые 10 секунд
   useEffect(() => {
+		refetch()
+		lastSyncTimeRef.current = Date.now()
     const tick = () => {
-      if (!document.hidden || currentCountRef.current !== 0) {
-				console.log(currentCountRef.current, 'ref')
+      const now = Date.now()
+      const timePassed = now - lastSyncTimeRef.current
+
+      if ((!document.hidden && timePassed >= 10000) || pendingRef.current !== 0) {
         syncNow()
       }
     }
@@ -80,25 +84,28 @@ function useCounterSync(
     return () => {
       clearInterval(timerId)
       // при размонтировании — финальная синхронизация
-      if (currentCountRef.current !== 0) {
-        mutateAsync(currentCountRef.current)
-          .then((newValue) => {
-            queryClient.setQueryData(['counter', id], newValue)
-            setCurrentCount(0)
+      const amount = pendingRef.current
+      if (amount !== 0) {
+        mutateAsync(pendingRef.current)
+          .then((data) => {
+            queryClient.setQueryData(['counter', id], data.clicks)
+            pendingRef.current = 0
           })
           .catch(console.error)
-      } else {
-        refetch().catch(console.error)
       }
     }
   }, [id])
 
+  useEffect(() => {
+    if (data?.clicks !== undefined) {
+      dispatch(setLocalCount({ count: data.clicks, slug: data.slug }))
+    }
+  }, [data, dispatch])
+
   return {
-    globalCount,
+    globalCount: data?.clicks ?? 0,
     isLoading,
     isError,
-		currentCountRef,
-    resetCurrent: () => setCurrentCount(0),
     syncNow
   }
 }

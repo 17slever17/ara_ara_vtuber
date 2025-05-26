@@ -13,7 +13,6 @@ const Card: React.FC<TCardProps> = ({ link, imgUrl, title }) => {
       <div className={styles.img}>
         <img src={imgUrl} alt='asd' />
       </div>
-
       <span className={styles.title}>{title}</span>
     </Link>
   )

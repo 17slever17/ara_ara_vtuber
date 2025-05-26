@@ -29,11 +29,11 @@ const App: React.FC = () => {
         {data.map((vtuber, id) => (
           <Route
             key={id}
-            path={`/${vtuber.src}`}
+            path={`/${vtuber.slug}`}
             element={
               <Clicker
                 id={vtuber.id}
-                src={vtuber.src}
+                slug={vtuber.slug}
                 name={vtuber.name}
                 link={vtuber.link}
                 sound={vtuber.sound}

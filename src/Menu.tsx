@@ -1,6 +1,6 @@
 import styles from './scss/Menu.module.scss'
 import CardBlock from './CardBlock'
-import { useAppSelector, useAppDispatch } from './hooks'
+import { useAppSelector, useAppDispatch } from './hooks/hooks'
 import {
   selectSettings,
   setBackgroundPattern,
@@ -8,8 +8,12 @@ import {
   setClickParticles
 } from './redux/slices/settingsSlice'
 
-const Menu: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
-  const { page, clickCount } = useAppSelector(selectSettings)
+import useGetAmount from './hooks/useGetAmount'
+import { MutableRefObject } from 'react'
+
+const Menu: React.FC<{  isOpen: boolean; openedRef: MutableRefObject<boolean> }> = ({ isOpen, openedRef }) => {
+  const { isError, isLoading, globalCount } = useGetAmount(openedRef)
+  const { slug, localCounts } = useAppSelector(selectSettings)
   const dispatch = useAppDispatch()
   const changeStyles = (id: number, setPattern: Function) => {
     dispatch(setPattern(id))
@@ -21,15 +25,14 @@ const Menu: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
     changeStyles(id, setFallingParticles)
   }
   const changeEmotes = (id: number) => {
-    dispatch(setClickParticles({"id": id, "page": page}))
+    dispatch(setClickParticles({ id: id, slug: slug }))
   }
-  const sumObjectValues = () => Object.values(clickCount).reduce((acc, val) => acc + val, 0)
-	const sumWithDots = (num: number) => num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+  const numWithDots = (num: number) => num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
 
   return (
     <div className={`${styles.wrapperMenu} ${isOpen ? styles.openedMenu : ''}`}>
       <div className={styles.settingsMenu}>
-        <span className={styles.countTitle}>Global Count: {sumWithDots(sumObjectValues())}</span>
+        <span className={styles.countTitle}>Global Count: {numWithDots(globalCount)}</span>
         <CardBlock
           items={[1, 2, 3, 4, 5, 6]}
           src='backgrounds'
@@ -37,7 +40,7 @@ const Menu: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
           onSelect={changeBackgroundPattern}
         />
         <CardBlock items={[1, 2, 3]} src='fallings' title='Falling particles' onSelect={changeFallingParticles} />
-        {page !== 'home' && <span className={styles.countTitle}>Local Count: {sumWithDots(clickCount[page])}</span>}
+        {slug !== 'home' && <span className={styles.countTitle}>Local Count: {numWithDots(localCounts[slug])}</span>}
         <CardBlock
           items={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}
           src='emotes'
