@@ -1,4 +1,5 @@
-const API_URL = process.env.REACT_APP_API_URL
+
+const API_URL = import.meta.env.VITE_API_URL
 //'http://localhost:5000/api'
 export async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${API_URL}${path}`, {
@@ -13,6 +14,6 @@ export async function apiFetch<T>(path: string, options?: RequestInit): Promise<
     const errorText = await res.text()
     throw new Error(`Ошибка API: ${res.status} ${errorText}`)
   }
-	
+
   return await res.json()
 }
