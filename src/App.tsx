@@ -1,13 +1,26 @@
 import { Route, Routes } from 'react-router-dom'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
 import data from './data.json'
+import SettingsStorageSync from './utils/SettingsStorageSync'
+
 import Clicker from './Clicker'
 import Home from './Home'
 import Settings from './Settings'
-import SettingsStorageSync from './utils/SettingsStorageSync'
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 10000,
+      refetchOnWindowFocus: false,
+      retry: 1
+    }
+  }
+})
 
 const App: React.FC = () => {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <SettingsStorageSync />
       <Settings />
       <Routes>
@@ -30,7 +43,7 @@ const App: React.FC = () => {
           ></Route>
         ))}
       </Routes>
-    </>
+    </QueryClientProvider>
   )
 }
 
